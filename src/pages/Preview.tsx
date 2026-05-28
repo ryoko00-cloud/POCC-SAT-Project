@@ -6,7 +6,7 @@ original: string;
 source: string;
 }
 interface SerpApiResponse {
-    images_results: ImageResult[];
+    organic_results: ImageResult[];
 }
 
 import "../App.css";
@@ -39,7 +39,7 @@ function Preview() {
         //     .then((result) => setData(result))
         //     .catch(() => setData("error"));
         const queryString = new URLSearchParams(params).toString();
-        fetch('/api/search?${queryString}')
+        fetch(`/api/search?${queryString}`)
             .then((res) => res.json())
             .then((result: SerpApiResponse) => {
                 console.log(result)
@@ -50,10 +50,10 @@ function Preview() {
 
     if (!data) return <div className="loading">Loading...</div>;
 
-    if (data === "error")
-        return <div className="error">Failed to load</div>;
+        // if (data === "error")
+        //     return <div className="error">Failed to load</div>;
 
-    const app = data?.app_highlight;
+        // const app = data?.app_highlight;
 
     return (
         <div className="container">
