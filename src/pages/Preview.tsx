@@ -6,6 +6,7 @@ original: string;
 source: string;
 }
 interface SerpApiResponse {
+    app_highlight: any;
     organic_results: ImageResult[];
 }
 
@@ -53,7 +54,7 @@ function Preview() {
         // if (data === "error")
         //     return <div className="error">Failed to load</div>;
 
-        // const app = data?.app_highlight;
+        const app = data?.app_highlight;
 
     return (
         <div className="container">
