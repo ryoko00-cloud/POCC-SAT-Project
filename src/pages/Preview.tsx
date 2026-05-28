@@ -1,13 +1,23 @@
 import { useEffect, useState } from "react";
+
+interface ImageResult {
+title: string;
+original: string;
+source: string;
+}
+interface SerpApiResponse {
+    images_results: ImageResult[];
+}
+
 import "../App.css";
 
 function Preview() {
-    const [data, setData] = useState<any>(null);
+    // const [data, setData] = useState<any>(null);
+    const [data, setData] = useState<SerpApiResponse | null>(null);
+    // const API_KEY =
+    //     "4518dd6f0831862d508f88c8a47045536659a0a67ac1fed01d93640071227b89";
 
-    const API_KEY =
-        "4518dd6f0831862d508f88c8a47045536659a0a67ac1fed01d93640071227b89";
-
-    const ENDPOINT = "https://serpapi.com/search";
+    // const ENDPOINT = "https://serpapi.com/search";
 
     const params = {
         engine: "google_play_games",
@@ -17,17 +27,25 @@ function Preview() {
     };
 
     useEffect(() => {
-        const queryString = new URLSearchParams({
-            ...params,
-            api_key: API_KEY,
-        }).toString();
+        // const queryString = new URLSearchParams({
+        //     ...params,
+        //     api_key: API_KEY,
+        // }).toString();
 
-        const url = `${ENDPOINT}?${queryString}`;
+        // const url = `${ENDPOINT}?${queryString}`;
 
-        fetch("https://corsproxy.io/?" + encodeURIComponent(url))
+        // fetch("https://corsproxy.io/?" + encodeURIComponent(url))
+        //     .then((res) => res.json())
+        //     .then((result) => setData(result))
+        //     .catch(() => setData("error"));
+        const queryString = new URLSearchParams(params).toString();
+        fetch('/api/search?${queryString}')
             .then((res) => res.json())
-            .then((result) => setData(result))
-            .catch(() => setData("error"));
+            .then((result: SerpApiResponse) => {
+                console.log(result)
+                setData(result)
+            })
+            .catch((err) => console.error("Error:", err)) 
     }, []);
 
     if (!data) return <div className="loading">Loading...</div>;
@@ -140,3 +158,4 @@ function Preview() {
 }
 
 export default Preview;
+
