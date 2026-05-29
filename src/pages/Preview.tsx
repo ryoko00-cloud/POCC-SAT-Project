@@ -34,7 +34,7 @@ function Preview() {
 
     useEffect(() => {
         const params = {
-            engine: "google_play_games",
+            engine: "google_play",
             q: "clash royale",
             hl: "en",
             gl: "us",
