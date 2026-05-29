@@ -1,60 +1,75 @@
 import { useEffect, useState } from "react";
 
-interface ImageResult {
-title: string;
-original: string;
-source: string;
+interface AppHighlight {
+  title: string;
+  thumbnail: string;
+  description: string;
+  rating: number;
+  reviews: number;
+  downloads: string;
+  video: string;
+  link: string;
+  images: string[];
+  author: string;
+
+  content_rating?: {
+      text: string;
+  };
 }
+
 interface SerpApiResponse {
-    app_highlight: any;
-    organic_results: ImageResult[];
+  app_highlight: AppHighlight;
 }
+
 
 import "../App.css";
 
 function Preview() {
-    // const [data, setData] = useState<any>(null);
+    // const [data, setData] = useState(null);
     const [data, setData] = useState<SerpApiResponse | null>(null);
     // const API_KEY =
     //     "4518dd6f0831862d508f88c8a47045536659a0a67ac1fed01d93640071227b89";
 
     // const ENDPOINT = "https://serpapi.com/search";
 
-    const params = {
-        engine: "google_play_games",
-        q: "clash royale",
-        hl: "en",
-        gl: "us",
-    };
-
     useEffect(() => {
+        const params = {
+            engine: "google_play_games",
+            q: "clash royale",
+            hl: "en",
+            gl: "us",
+        };
         // const queryString = new URLSearchParams({
         //     ...params,
         //     api_key: API_KEY,
         // }).toString();
 
-        // const url = `${ENDPOINT}?${queryString}`;
+        // const serpUrl = `${ENDPOINT}?${queryString}`;
 
-        // fetch("https://corsproxy.io/?" + encodeURIComponent(url))
-        //     .then((res) => res.json())
-        //     .then((result) => setData(result))
-        //     .catch(() => setData("error"));
-        const queryString = new URLSearchParams(params).toString();
+        // fetch("https://corsproxy.io/?" + encodeURIComponent(serpUrl))
+
+        const queryString = new URLSearchParams(params).toString()
         fetch(`/api/search?${queryString}`)
             .then((res) => res.json())
             .then((result: SerpApiResponse) => {
-                console.log(result)
-                setData(result)
+                console.log(result);
+                setData(result);
             })
-            .catch((err) => console.error("Error:", err)) 
+            .catch((err) => console.error("Error:", err));
     }, []);
 
-    if (!data) return <div className="loading">Loading...</div>;
+    if (!data) {
+        return <div className="loading">Loading...</div>;
+    }
 
         // if (data === "error")
         //     return <div className="error">Failed to load</div>;
 
         const app = data?.app_highlight;
+
+        if (!app) {
+            return <div>No app found</div>;
+        }
 
     return (
         <div className="container">
